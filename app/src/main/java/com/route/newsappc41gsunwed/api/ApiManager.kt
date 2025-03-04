@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object ApiManager {
-    val API_KEY = "8e30e66ecc364d75967401f639e6f535"
+    val API_KEY = "4a40593642de4f16b5c0e5c11d9662fa"
     private val httpLoggingInterceptor = HttpLoggingInterceptor { message ->
         Log.e("API", message)
     }.apply {

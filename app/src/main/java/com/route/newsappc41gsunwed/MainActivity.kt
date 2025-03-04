@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +29,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.route.newsappc41gsunwed.categories.CategoriesScreen
-import com.route.newsappc41gsunwed.news.NewsScreenContent
+import com.route.newsappc41gsunwed.news.NewsScreen
+import com.route.newsappc41gsunwed.news.SearchScreen
 import com.route.newsappc41gsunwed.ui.theme.NewsAppC41GSunWedTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,30 +43,33 @@ class MainActivity : ComponentActivity() {
                 // Don't Call API HERE
                 // Toolbars or Bottom Navigation Views or Navigation Drawers
                 // Use Scaffold
-                Scaffold(
-                    topBar = {
-                        NewsToolbar(title = "General")
-                    },
-                    containerColor = Color.Black
-                ) { paddingValues ->
-                    paddingValues
+
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = CategoriesScreen,
-                        modifier = Modifier.padding(paddingValues)
+                        startDestination = CategoriesRoute,
                     ) {
                         // Login Screen - Register Screen- Forgot Password
-                        composable<CategoriesScreen> {
-                            CategoriesScreen(navController)
+                        composable<CategoriesRoute> {
+                            CategoriesScreen(
+                                onCategoryClick = {endpointId: String ->
+                                navController.navigate(NewsRoute(endpointId))
+                            }){
+                                navController.navigate(SearchRoute)
+                            }
                         }
-                        composable<NewsScreen> {
-                            val endpointId = it.toRoute<NewsScreen>().endpointId
-                            NewsScreenContent(endpointId)
+                        composable<NewsRoute> {
+                            val endpointId = it.toRoute<NewsRoute>().endpointId
+                            NewsScreen(endpointId){
+                                navController.navigate(SearchRoute)
+                            }
+                        }
+                        composable<SearchRoute> {
+                            SearchScreen()
                         }
                     }
 
-                }
+
             }
         }
 
@@ -77,7 +82,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NewsToolbar(
     title: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSearchClick:()->Unit
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -91,7 +97,9 @@ fun NewsToolbar(
                     painter = painterResource(id = R.drawable.ic_search),
                     contentDescription = stringResource(
                         R.string.news_search
-                    )
+                    ), modifier = Modifier.clickable {
+                        onSearchClick()
+                    }
                 )
             }
         },
@@ -112,7 +120,7 @@ fun NewsToolbar(
 @Preview
 @Composable
 private fun NewsToolbarPreview() {
-    NewsToolbar(title = "General")
+    NewsToolbar(title = "General"){}
 }
 
 

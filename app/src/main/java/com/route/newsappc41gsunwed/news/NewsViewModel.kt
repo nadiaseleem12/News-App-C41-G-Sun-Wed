@@ -1,8 +1,11 @@
 package com.route.newsappc41gsunwed.news
 
 import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.route.newsappc41gsunwed.api.ApiManager
@@ -21,6 +24,11 @@ class NewsViewModel : ViewModel() {
     val sourcesListStates = mutableStateListOf<SourcesItem>()
     val newsListStates = mutableStateListOf<ArticlesItem>()
     val errorState = mutableStateOf("")
+    var openBottomSheet = mutableStateOf(false)
+    var selectedArticle = mutableStateOf<ArticlesItem?>(null)
+
+    val searchQuery = mutableStateOf("")
+    val isFocused = mutableStateOf(true)
 
     fun getSources(endpointId: String) {
         isLoading.value = true
@@ -90,4 +98,37 @@ class NewsViewModel : ViewModel() {
                 })
         }
     }
+
+    fun getNews() {
+        isLoading.value = true
+        ApiManager.newsServices.searchNews(searchQuery.value)
+            .enqueue(object : Callback<NewsResponse> {
+                override fun onResponse(
+                    p0: Call<NewsResponse>,
+                    response: Response<NewsResponse>
+                ) {
+                    isLoading.value = false
+                    if (response.isSuccessful) {
+                        val list = response.body()?.articles
+                        if (list != null) {
+                            newsListStates.clear()
+                            newsListStates.addAll(list)
+                        }
+                    } else {
+                        val json = response.errorBody()?.string()
+                        val gson = Gson()
+                        val newsResponse = gson.fromJson(json, NewsResponse::class.java)
+                        errorState.value = "${newsResponse.message}"
+                    }
+                }
+
+                override fun onFailure(p0: Call<NewsResponse>, throwable: Throwable) {
+                    isLoading.value = false
+                    errorState.value = "${throwable.message}"
+                }
+
+            })
+    }
+
+
 }

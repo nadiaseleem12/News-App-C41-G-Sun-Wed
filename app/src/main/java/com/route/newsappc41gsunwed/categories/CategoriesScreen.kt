@@ -12,12 +12,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,17 +34,27 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.route.newsappc41gsunwed.NewsScreen
+import com.route.newsappc41gsunwed.NewsRoute
+import com.route.newsappc41gsunwed.NewsToolbar
 import com.route.newsappc41gsunwed.R
 import com.route.newsappc41gsunwed.api.model.Category
 import com.route.newsappc41gsunwed.ui.theme.blackWith50Opacity
 
 
 @Composable
-fun CategoriesScreen(navHostController: NavHostController, modifier: Modifier = Modifier) {
+fun CategoriesScreen(modifier: Modifier = Modifier,onCategoryClick: (endpointId: String) -> Unit,onSearchClick:()->Unit) {
+    Scaffold(
+        topBar = {
+            NewsToolbar(title = "General"){
+                onSearchClick()
+            }
+        },
+        containerColor = Color.Black
+    ) { paddingValues ->
     LazyColumn(
         modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = paddingValues
     ) {
         item {
             Text(
@@ -62,10 +72,10 @@ fun CategoriesScreen(navHostController: NavHostController, modifier: Modifier = 
         val categoriesList = Category.getCategoriesList()
         items(categoriesList.size) { position ->
             CategoryCard(categoriesList.get(position), isRight = position % 2 == 0) { endpointId ->
-                navHostController.navigate(NewsScreen(endpointId))
+                onCategoryClick(endpointId)
             }
         }
-
+    }
 
     }
 }
@@ -212,5 +222,7 @@ private fun CategoryCardLeft() {
 @Preview
 @Composable
 private fun CategoriesScreenPreview() {
-    CategoriesScreen(rememberNavController())
+    CategoriesScreen(onCategoryClick = {}){
+
+    }
 }

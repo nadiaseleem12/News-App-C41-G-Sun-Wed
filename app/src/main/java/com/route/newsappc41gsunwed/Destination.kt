@@ -3,7 +3,10 @@ package com.route.newsappc41gsunwed
 import kotlinx.serialization.Serializable
 
 @Serializable
-object CategoriesScreen
+object CategoriesRoute
 
 @Serializable
-class NewsScreen(val endpointId: String)
+class NewsRoute(val endpointId: String)
+
+@Serializable
+object SearchRoute

@@ -25,8 +25,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,11 +44,15 @@ import com.route.newsappc41gsunwed.api.model.ArticlesItem
 import com.route.newsappc41gsunwed.api.model.SourcesItem
 import com.route.newsappc41gsunwed.ui.theme.gray
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.route.newsappc41gsunwed.NewsToolbar
+import com.route.newsappc41gsunwed.widgets.ErrorDialog
+import com.route.newsappc41gsunwed.widgets.NewsCard
+import com.route.newsappc41gsunwed.widgets.NewsList
 
 // News Screen -> MVVM
 @Composable
-fun NewsScreenContent(
-    endpointId: String, viewModel: NewsViewModel = viewModel(), modifier: Modifier = Modifier
+fun NewsScreen(
+    endpointId: String, viewModel: NewsViewModel = viewModel(), modifier: Modifier = Modifier,onSearchClick:()->Unit
 ) {
     val sourcesList = viewModel.sourcesListStates
     val newsList = viewModel.newsListStates
@@ -61,17 +63,28 @@ fun NewsScreenContent(
         viewModel.getNewsBySource()
 
     }
-    Column(modifier) {
-        if (sourcesList.isNotEmpty())
-            SourcesTabRow(
-                sourcesList = sourcesList,
-                modifier = Modifier.padding(bottom = 8.dp)
-            ) {
-                newsList.clear()
-                viewModel.selectedSourceId.value = it
+    Scaffold(
+        topBar = {
+            NewsToolbar(title = "General"){
+                onSearchClick()
             }
-        NewsList(newsList = newsList)
+        },
+        containerColor = Color.Black
+    ) { paddingValues ->
+
+        Column(modifier.padding(paddingValues)) {
+            if (sourcesList.isNotEmpty())
+                SourcesTabRow(
+                    sourcesList = sourcesList,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                ) {
+                    newsList.clear()
+                    viewModel.selectedSourceId.value = it
+                }
+            NewsList(viewModel)
+        }
     }
+
     if (viewModel.isLoading.value)
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -80,70 +93,14 @@ fun NewsScreenContent(
         ) {
             CircularProgressIndicator(color = Color.White)
         }
+
     if (viewModel.errorState.value.isNotEmpty())
-        ErrorDialog(viewModel = viewModel)
-}
-
-@Composable
-fun ErrorDialog(viewModel: NewsViewModel, modifier: Modifier = Modifier) {
-    AlertDialog(onDismissRequest = { viewModel.errorState.value = "" }, confirmButton = {
-        TextButton(onClick = { viewModel.errorState.value = "" }) {
-            Text(text = stringResource(R.string.ok))
+        ErrorDialog(viewModel.errorState.value){
+            viewModel.errorState.value=""
         }
-    }, containerColor = Color.White, text = {
-        Text(text = viewModel.errorState.value, color = Color.Black, fontSize = 14.sp)
-    }
-    )
 }
 
 
-@Composable
-fun NewsList(newsList: List<ArticlesItem>, modifier: Modifier = Modifier) {
-    LazyColumn {
-        items(newsList) {
-            NewsCard(articleItem = it)
-        }
-    }
-}
-
-@Composable
-fun NewsCard(articleItem: ArticlesItem, modifier: Modifier = Modifier) {
-    Card(
-        modifier
-            .fillMaxWidth()
-            .border(1.dp, Color.White, RoundedCornerShape(10.dp))
-            .padding(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent,
-            contentColor = Color.White
-        ),
-
-        ) {
-        AsyncImage(
-            model = articleItem.urlToImage,
-            contentDescription = "Specific News Image ",
-            modifier = Modifier
-                .height(200.dp)
-                .fillMaxWidth(),
-            contentScale = ContentScale.Crop
-        )
-        Text(
-            text = articleItem.title ?: "",
-            fontSize = 20.sp,
-            color = Color.White,
-            fontWeight = FontWeight.W700,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis
-        )
-        Text(
-            text = stringResource(id = R.string.by) + "${articleItem.author}",
-            color = gray,
-            fontSize = 10.sp,
-            fontWeight = FontWeight.W500
-        )
-
-    }
-}
 
 @Preview(showSystemUi = true)
 @Composable

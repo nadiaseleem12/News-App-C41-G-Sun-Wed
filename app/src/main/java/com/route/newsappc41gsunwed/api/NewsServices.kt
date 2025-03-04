@@ -19,4 +19,10 @@ interface NewsServices {
         @Query("sources") source: String,
         @Query("apiKey") apiKey: String = ApiManager.API_KEY
     ): Call<NewsResponse>
+
+    @GET("everything")
+    fun searchNews(
+        @Query("q") query: String,
+        @Query("apiKey") apiKey: String = ApiManager.API_KEY
+    ): Call<NewsResponse>
 }
