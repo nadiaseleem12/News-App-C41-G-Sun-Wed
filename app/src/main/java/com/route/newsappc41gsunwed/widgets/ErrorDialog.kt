@@ -1,6 +1,7 @@
 package com.route.newsappc41gsunwed.widgets
 
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -12,13 +13,22 @@ import com.route.newsappc41gsunwed.R
 import com.route.newsappc41gsunwed.news.NewsViewModel
 
 @Composable
-fun ErrorDialog(errorState:String, modifier: Modifier = Modifier, onDismiss: () -> Unit ) {
-    AlertDialog(onDismissRequest = { onDismiss() }, confirmButton = {
-        TextButton(onClick = { onDismiss()}) {
-            Text(text = stringResource(R.string.ok))
+fun ErrorDialog(errorState: String, modifier: Modifier = Modifier, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = { onDismiss() },
+        confirmButton = {
+            TextButton(onClick = { onDismiss() }) {
+                Text(text = stringResource(R.string.ok))
+            }
+        },
+        containerColor = MaterialTheme.colorScheme.surface,
+        text = {
+            Text(
+                text = errorState,
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 14.sp
+            )
         }
-    }, containerColor = Color.White, text = {
-        Text(text = errorState, color = Color.Black, fontSize = 14.sp)
-    }
     )
 }
+

@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,10 +36,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.route.newsappc41gsunwed.NewsRoute
-import com.route.newsappc41gsunwed.NewsToolbar
 import com.route.newsappc41gsunwed.R
 import com.route.newsappc41gsunwed.api.model.Category
 import com.route.newsappc41gsunwed.ui.theme.blackWith50Opacity
+import com.route.newsappc41gsunwed.widgets.NewsToolbar
 
 
 @Composable
@@ -49,7 +50,7 @@ fun CategoriesScreen(modifier: Modifier = Modifier,onCategoryClick: (endpointId:
                 onSearchClick()
             }
         },
-        containerColor = Color.Black
+        containerColor =MaterialTheme.colorScheme.background
     ) { paddingValues ->
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -61,7 +62,7 @@ fun CategoriesScreen(modifier: Modifier = Modifier,onCategoryClick: (endpointId:
                 text = stringResource(R.string.good_morning) +
                         stringResource(R.string.here_is_some_news_for_you),
                 fontWeight = FontWeight.W500,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onBackground,
 
                 fontSize = 22.sp,
                 modifier = Modifier
@@ -92,8 +93,10 @@ fun CategoryCard(
             onCategoryClick(category.endpointId ?: "")
         },
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Black),
-        modifier = modifier
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.onSurface,
+            contentColor = MaterialTheme.colorScheme.surface
+        ),        modifier = modifier
             .padding(vertical = 2.dp, horizontal = 4.dp)
             .fillMaxWidth(0.9F)
             .height(200.dp)

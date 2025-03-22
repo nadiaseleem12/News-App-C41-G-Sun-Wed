@@ -18,6 +18,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -44,15 +45,18 @@ import com.route.newsappc41gsunwed.api.model.ArticlesItem
 import com.route.newsappc41gsunwed.api.model.SourcesItem
 import com.route.newsappc41gsunwed.ui.theme.gray
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.route.newsappc41gsunwed.NewsToolbar
 import com.route.newsappc41gsunwed.widgets.ErrorDialog
 import com.route.newsappc41gsunwed.widgets.NewsCard
 import com.route.newsappc41gsunwed.widgets.NewsList
+import com.route.newsappc41gsunwed.widgets.NewsToolbar
 
 // News Screen -> MVVM
 @Composable
 fun NewsScreen(
-    endpointId: String, viewModel: NewsViewModel = viewModel(), modifier: Modifier = Modifier,onSearchClick:()->Unit
+    endpointId: String,
+    viewModel: NewsViewModel = viewModel(),
+    modifier: Modifier = Modifier,
+    onSearchClick: () -> Unit
 ) {
     val sourcesList = viewModel.sourcesListStates
     val newsList = viewModel.newsListStates
@@ -61,17 +65,15 @@ fun NewsScreen(
     }
     LaunchedEffect(viewModel.selectedSourceId.value) {
         viewModel.getNewsBySource()
-
     }
     Scaffold(
         topBar = {
-            NewsToolbar(title = "General"){
+            NewsToolbar(title = "General") {
                 onSearchClick()
             }
         },
-        containerColor = Color.Black
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
-
         Column(modifier.padding(paddingValues)) {
             if (sourcesList.isNotEmpty())
                 SourcesTabRow(
@@ -91,12 +93,12 @@ fun NewsScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CircularProgressIndicator(color = Color.White)
+            CircularProgressIndicator(color = MaterialTheme.colorScheme.onBackground)
         }
 
     if (viewModel.errorState.value.isNotEmpty())
-        ErrorDialog(viewModel.errorState.value){
-            viewModel.errorState.value=""
+        ErrorDialog(viewModel.errorState.value) {
+            viewModel.errorState.value = ""
         }
 }
 
@@ -127,21 +129,22 @@ fun SourcesTabRow(
     LaunchedEffect(Unit) {
         onSourceSelected(sourcesList.get(0).id ?: "")
     }
+    val color = MaterialTheme.colorScheme.onBackground
     val selectedModifier = Modifier.drawBehind {
         val strokeWidthPx = 2.dp.toPx()
         val verticalOffset = size.height - 2.sp.toPx()
         drawLine(
-            color = Color.White,
+            color = color ,
             strokeWidth = strokeWidthPx,
             start = Offset(0f, verticalOffset),
             end = Offset(size.width, verticalOffset)
         )
     }
-    LazyRow(modifier.background(Color.Black)) {
+    LazyRow(modifier.background(MaterialTheme.colorScheme.background)) {
         itemsIndexed(sourcesList) { index, sourceItem ->
             Tab(
-                selectedContentColor = Color.White,
-                unselectedContentColor = Color.White,
+                selectedContentColor = MaterialTheme.colorScheme.onBackground,
+                unselectedContentColor = MaterialTheme.colorScheme.onBackground,
                 selected = selectedItemIndex.intValue == index,
                 onClick = {
                     Log.e("TAG", "SourcesTabRow:  $index")
@@ -152,20 +155,14 @@ fun SourcesTabRow(
             ) {
                 Text(
                     text = sourceItem.name ?: "",
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = if (selectedItemIndex.intValue == index) selectedModifier else Modifier
                 )
-//                    if (selectedItemIndex.intValue == index)
-//                        HorizontalDivider(
-//                            modifier = Modifier.height(2.dp),
-//                            color = Color.White,
-//                            thickness = 1.dp
-//                        )
-
             }
         }
     }
 }
+
 
 @Preview(showSystemUi = true)
 @Composable

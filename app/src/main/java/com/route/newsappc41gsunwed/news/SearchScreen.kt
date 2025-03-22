@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -49,30 +50,37 @@ fun SearchScreen(viewModel: NewsViewModel = viewModel(), modifier: Modifier = Mo
     LaunchedEffect(true) {
         searchTFFocusRequester.requestFocus()
     }
-    Scaffold { paddingValues ->
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.background
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            TextField(value = viewModel.searchQuery.value, onValueChange = { newValue ->
-                viewModel.searchQuery.value = newValue
-            }, maxLines = 1, placeholder = {
-                Text(text = stringResource(R.string.search))
-            }, colors = TextFieldDefaults.colors(
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.LightGray,
-                focusedContainerColor = Color.Black,
-                unfocusedContainerColor = Color.Black,
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                cursorColor = Color.White
-            ),
+            TextField(
+                value = viewModel.searchQuery.value,
+                onValueChange = { newValue ->
+                    viewModel.searchQuery.value = newValue
+                },
+                maxLines = 1,
+                placeholder = {
+                    Text(text = stringResource(R.string.search))
+                },
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = Color.LightGray,
+                    focusedContainerColor = MaterialTheme.colorScheme.background,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    cursorColor = MaterialTheme.colorScheme.onBackground
+                ),
                 modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth()
                     .border(
-                        1.dp, Color.White, RoundedCornerShape(16.dp)
+                        1.dp, MaterialTheme.colorScheme.onBackground, RoundedCornerShape(16.dp)
                     )
                     .focusRequester(searchTFFocusRequester)
                     .onFocusChanged { focusState ->
@@ -84,7 +92,7 @@ fun SearchScreen(viewModel: NewsViewModel = viewModel(), modifier: Modifier = Mo
                             imageVector = Icons.Default.Close,
                             contentDescription = "close",
                             colorFilter = ColorFilter.tint(
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onBackground,
                                 blendMode = BlendMode.SrcAtop
                             ),
                             modifier = Modifier.clickable {
@@ -99,9 +107,10 @@ fun SearchScreen(viewModel: NewsViewModel = viewModel(), modifier: Modifier = Mo
                         imageVector = Icons.Default.Search,
                         contentDescription = "clear",
                         colorFilter = ColorFilter.tint(
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onBackground,
                             blendMode = BlendMode.SrcAtop
-                        ), modifier = Modifier.clickable {
+                        ),
+                        modifier = Modifier.clickable {
                             viewModel.getNews()
                         }
                     )
@@ -109,7 +118,8 @@ fun SearchScreen(viewModel: NewsViewModel = viewModel(), modifier: Modifier = Mo
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Search
-                ), keyboardActions = KeyboardActions(onSearch = {
+                ),
+                keyboardActions = KeyboardActions(onSearch = {
                     viewModel.getNews()
                 })
             )
@@ -121,15 +131,13 @@ fun SearchScreen(viewModel: NewsViewModel = viewModel(), modifier: Modifier = Mo
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    CircularProgressIndicator(color = Color.White)
+                    CircularProgressIndicator(color = MaterialTheme.colorScheme.onBackground)
                 }
 
             if (viewModel.errorState.value.isNotEmpty())
-                ErrorDialog(viewModel.errorState.value){
-                    viewModel.errorState.value=""
+                ErrorDialog(viewModel.errorState.value) {
+                    viewModel.errorState.value = ""
                 }
-
         }
     }
-
 }

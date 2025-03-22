@@ -20,6 +20,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -73,28 +74,24 @@ fun ArticleDetailsBottomSheet(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit
 ) {
-
     val sheetState = rememberModalBottomSheetState()
     val context = LocalContext.current
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = { onDismiss() },
         dragHandle = {},
-        containerColor = Color.White
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
         Card(
             modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Color.White,
-                contentColor = Color.White
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface
             ),
-
-            ) {
+        ) {
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-
-
                 AsyncImage(
                     model = articleItem?.urlToImage,
                     contentDescription = "Specific News Image ",
@@ -106,7 +103,7 @@ fun ArticleDetailsBottomSheet(
                 Text(
                     text = articleItem?.title ?: "",
                     fontSize = 20.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.W700,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -123,17 +120,17 @@ fun ArticleDetailsBottomSheet(
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(articleItem?.url))
                         context.startActivity(intent)
                     },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                     modifier = Modifier
                         .background(
-                            Color.Black,
+                            MaterialTheme.colorScheme.primary,
                             RoundedCornerShape(8.dp)
                         )
                         .fillMaxWidth()
                 ) {
                     Text(
                         text = stringResource(R.string.view_full_article),
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         fontSize = 16.sp
                     )
                 }
@@ -141,7 +138,6 @@ fun ArticleDetailsBottomSheet(
         }
     }
 }
-
 @Preview(showSystemUi = true)
 @Composable
 private fun ArticleDetailsBottomSheetPreview() {

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,14 +28,13 @@ fun NewsCard(articleItem: ArticlesItem, modifier: Modifier = Modifier) {
     Card(
         modifier
             .fillMaxWidth()
-            .border(1.dp, Color.White, RoundedCornerShape(10.dp))
+            .border(1.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(10.dp))
             .padding(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.Transparent,
-            contentColor = Color.White
+            contentColor = MaterialTheme.colorScheme.onBackground
         ),
-
-        ) {
+    ) {
         AsyncImage(
             model = articleItem.urlToImage,
             contentDescription = "Specific News Image ",
@@ -46,7 +46,7 @@ fun NewsCard(articleItem: ArticlesItem, modifier: Modifier = Modifier) {
         Text(
             text = articleItem.title ?: "",
             fontSize = 20.sp,
-            color = Color.White,
+            color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.W700,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
@@ -57,6 +57,5 @@ fun NewsCard(articleItem: ArticlesItem, modifier: Modifier = Modifier) {
             fontSize = 10.sp,
             fontWeight = FontWeight.W500
         )
-
     }
 }
