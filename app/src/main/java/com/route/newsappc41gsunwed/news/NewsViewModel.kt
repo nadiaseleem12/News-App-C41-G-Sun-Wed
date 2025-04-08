@@ -8,10 +8,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.route.data.api.model.ArticlesItem
 import com.route.domain.entities.ArticlesItemEntity
 import com.route.domain.entities.SourcesItemEntity
 import com.route.domain.usecases.GetNewsUseCase
 import com.route.domain.usecases.GetSourcesUseCase
+import com.route.domain.usecases.SearchNewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NewsViewModel @Inject constructor(
     private val getSourcesUseCase: GetSourcesUseCase,
-    private val getNewsBySourceUseCase: GetNewsUseCase
+    private val getNewsBySourceUseCase: GetNewsUseCase,
+    private val searchNewsUseCase: SearchNewsUseCase
 ) : ViewModel() {
     // contain States and Logic
     val selectedSourceId = mutableStateOf("") // Observer Pattern
@@ -29,7 +32,7 @@ class NewsViewModel @Inject constructor(
     val newsListStates = mutableStateListOf<ArticlesItemEntity>()
     val errorState = mutableStateOf("")
     var openBottomSheet = mutableStateOf(false)
-    var selectedArticle = mutableStateOf<ArticlesItem?>(null)
+    var selectedArticle = mutableStateOf<ArticlesItemEntity?>(null)
 
     val searchQuery = mutableStateOf("")
     val isFocused = mutableStateOf(true)
@@ -40,7 +43,7 @@ class NewsViewModel @Inject constructor(
             try {
                 val response = getSourcesUseCase.invoke(endpointId)
                 isLoading.value = false
-                if (response.isNotEmpty() == true) {
+                if (response.isNotEmpty()) {
                     sourcesListStates.addAll(response)
                 }
             } catch (e: Exception) {
@@ -61,7 +64,7 @@ class NewsViewModel @Inject constructor(
                 try {
                     val response = getNewsBySourceUseCase.invoke(selectedSourceId.value)
                     isLoading.value = false
-                    if (response.isNotEmpty() == true) {
+                    if (response.isNotEmpty()) {
                         newsListStates.clear()
                         newsListStates.addAll(response)
                     }
@@ -75,34 +78,21 @@ class NewsViewModel @Inject constructor(
     }
 
     fun getNews() {
-        isLoading.value = true
-        ApiManager.newsServices.searchNews(searchQuery.value)
-            .enqueue(object : Callback<NewsResponse> {
-                override fun onResponse(
-                    p0: Call<NewsResponse>,
-                    response: Response<NewsResponse>
-                ) {
+            isLoading.value = true
+            viewModelScope.launch(Dispatchers.IO) {
+                try {
+                    val response = searchNewsUseCase.invoke(searchQuery.value)
                     isLoading.value = false
-                    if (response.isSuccessful) {
-                        val list = response.body()?.articles
-                        if (list != null) {
-                            newsListStates.clear()
-                            newsListStates.addAll(list)
-                        }
-                    } else {
-                        val json = response.errorBody()?.string()
-                        val gson = Gson()
-                        val newsResponse = gson.fromJson(json, NewsResponse::class.java)
-                        errorState.value = "${newsResponse.message}"
+                    if (response.isNotEmpty()) {
+                        newsListStates.clear()
+                        newsListStates.addAll(response)
                     }
-                }
-
-                override fun onFailure(p0: Call<NewsResponse>, throwable: Throwable) {
+                } catch (e: Exception) {
                     isLoading.value = false
-                    errorState.value = "${throwable.message}"
+                    errorState.value = "${e.message}"
                 }
+            }
 
-            })
     }
 
 

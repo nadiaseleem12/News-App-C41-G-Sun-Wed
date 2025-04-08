@@ -2,7 +2,6 @@ package com.route.domain.entities
 
 
 data class NewsResponseEntity(
-
     val totalResults: Int? = null,
     val articles: List<ArticlesItemEntity>? = null,
     val status: String? = null,

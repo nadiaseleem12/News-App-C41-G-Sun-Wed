@@ -17,4 +17,8 @@ class NewsOnlineDataSourceImpl(
         return newsServices.getNewsBySource(sourceId).body()?.toEntity()?.articles ?: emptyList()
     }
 
+    override suspend fun searchNews(query: String): List<ArticlesItemEntity> {
+        return newsServices.searchNews(query).body()?.toEntity()?.articles ?: emptyList()
+    }
+
 }

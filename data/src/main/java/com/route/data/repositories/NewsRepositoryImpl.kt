@@ -16,4 +16,8 @@ class NewsRepositoryImpl(
         return onlineDataSource.fetchNewsBySource(sourceId)
     }
 
+    override suspend fun searchNews(query: String): List<ArticlesItemEntity> {
+        return onlineDataSource.searchNews(query)
+    }
+
 }

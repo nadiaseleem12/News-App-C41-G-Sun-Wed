@@ -19,12 +19,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.route.data.api.model.ArticlesItem
+import com.route.domain.entities.ArticlesItemEntity
 import com.route.newsappc41gsunwed.R
-import com.route.newsappc41gsunwed.api.model.ArticlesItem
 import com.route.newsappc41gsunwed.ui.theme.gray
 
 @Composable
-fun NewsCard(articleItem: ArticlesItem, modifier: Modifier = Modifier) {
+fun NewsCard(articleItem: ArticlesItemEntity, modifier: Modifier = Modifier) {
     Card(
         modifier
             .fillMaxWidth()

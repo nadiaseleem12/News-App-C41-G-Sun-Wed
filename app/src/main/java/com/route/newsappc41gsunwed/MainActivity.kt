@@ -40,10 +40,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.route.newsappc41gsunwed.categories.CategoriesScreen
-import com.route.newsappc41gsunwed.news.NewsScreenContent
+import com.route.newsappc41gsunwed.news.NewsScreen
+import com.route.newsappc41gsunwed.news.SearchScreen
 import com.route.newsappc41gsunwed.ui.theme.NewsAppC41GSunWedTheme
 import com.route.newsappc41gsunwed.utils.topBar.NewsToolbar
+import com.route.newsappc41gsunwed.widgets.DrawerContent
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
