@@ -12,13 +12,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,24 +38,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.route.newsappc41gsunwed.NewsScreen
+import com.route.newsappc41gsunwed.NewsRoute
 import com.route.newsappc41gsunwed.R
 import com.route.newsappc41gsunwed.Category
 import com.route.newsappc41gsunwed.ui.theme.blackWith50Opacity
+import com.route.newsappc41gsunwed.widgets.NewsToolbar
 
 
 @Composable
-fun CategoriesScreen(navHostController: NavHostController, modifier: Modifier = Modifier) {
+fun CategoriesScreen(modifier: Modifier = Modifier,drawerState: DrawerState,onCategoryClick: (endpointId: String) -> Unit,onSearchClick:()->Unit) {
+    Scaffold(
+        topBar = {
+            NewsToolbar(title = "General",drawerState = drawerState){
+                onSearchClick()
+            }
+        },
+        containerColor =MaterialTheme.colorScheme.background
+    ) { paddingValues ->
     LazyColumn(
         modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = paddingValues
     ) {
         item {
             Text(
                 text = stringResource(R.string.good_morning) +
                         stringResource(R.string.here_is_some_news_for_you),
                 fontWeight = FontWeight.W500,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onBackground,
 
                 fontSize = 22.sp,
                 modifier = Modifier
@@ -62,10 +76,10 @@ fun CategoriesScreen(navHostController: NavHostController, modifier: Modifier = 
         val categoriesList = Category.getCategoriesList()
         items(categoriesList.size) { position ->
             CategoryCard(categoriesList.get(position), isRight = position % 2 == 0) { endpointId ->
-                navHostController.navigate(NewsScreen(endpointId))
+                onCategoryClick(endpointId)
             }
         }
-
+    }
 
     }
 }
@@ -82,8 +96,10 @@ fun CategoryCard(
             onCategoryClick(category.endpointId ?: "")
         },
         shape = RoundedCornerShape(20.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White, contentColor = Color.Black),
-        modifier = modifier
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.onSurface,
+            contentColor = MaterialTheme.colorScheme.surface
+        ),        modifier = modifier
             .padding(vertical = 2.dp, horizontal = 4.dp)
             .fillMaxWidth(0.9F)
             .height(200.dp)
@@ -212,5 +228,7 @@ private fun CategoryCardLeft() {
 @Preview
 @Composable
 private fun CategoriesScreenPreview() {
-    CategoriesScreen(rememberNavController())
+    CategoriesScreen(drawerState = rememberDrawerState(DrawerValue.Closed),onCategoryClick = {}){
+
+    }
 }
