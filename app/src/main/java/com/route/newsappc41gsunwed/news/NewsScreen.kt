@@ -18,6 +18,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
@@ -56,7 +57,8 @@ fun NewsScreen(
     endpointId: String,
     viewModel: NewsViewModel = viewModel(),
     modifier: Modifier = Modifier,
-    onSearchClick: () -> Unit
+    drawerState: DrawerState,
+    onSearchClick: () -> Unit,
 ) {
     val sourcesList = viewModel.sourcesListStates
     val newsList = viewModel.newsListStates
@@ -68,7 +70,7 @@ fun NewsScreen(
     }
     Scaffold(
         topBar = {
-            NewsToolbar(title = "General") {
+            NewsToolbar(title = "General", drawerState = drawerState) {
                 onSearchClick()
             }
         },

@@ -17,9 +17,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DrawerState
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,10 +46,10 @@ import com.route.newsappc41gsunwed.widgets.NewsToolbar
 
 
 @Composable
-fun CategoriesScreen(modifier: Modifier = Modifier,onCategoryClick: (endpointId: String) -> Unit,onSearchClick:()->Unit) {
+fun CategoriesScreen(modifier: Modifier = Modifier,drawerState: DrawerState,onCategoryClick: (endpointId: String) -> Unit,onSearchClick:()->Unit) {
     Scaffold(
         topBar = {
-            NewsToolbar(title = "General"){
+            NewsToolbar(title = "General",drawerState = drawerState){
                 onSearchClick()
             }
         },
@@ -225,7 +228,7 @@ private fun CategoryCardLeft() {
 @Preview
 @Composable
 private fun CategoriesScreenPreview() {
-    CategoriesScreen(onCategoryClick = {}){
+    CategoriesScreen(drawerState = rememberDrawerState(DrawerValue.Closed),onCategoryClick = {}){
 
     }
 }

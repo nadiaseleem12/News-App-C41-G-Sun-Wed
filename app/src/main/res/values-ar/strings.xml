@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="light_mode">النهاري</string>
+    <string name="dark_mode">الليلي</string>
+    <string name="system_mode">مع الجهاز</string>
+</resources>

@@ -21,4 +21,12 @@
     <string name="ok">Ok</string>
     <string name="view_full_article">View Full Article</string>
     <string name="search">Search</string>
+    <string name="go_to_home">Go to Home</string>
+    <string name="theme">Theme\n</string>
+    <string name="language">Language</string>
+    <string name="light_mode">Light mode</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="system_mode">System Default</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
 </resources>
