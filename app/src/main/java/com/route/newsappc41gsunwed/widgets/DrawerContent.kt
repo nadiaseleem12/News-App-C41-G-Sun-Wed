@@ -35,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.route.newsappc41gsunwed.R
 import com.route.newsappc41gsunwed.SettingsViewModel
 import com.route.newsappc41gsunwed.utils.Constants
@@ -43,7 +44,7 @@ import com.route.newsappc41gsunwed.utils.Constants
 @Composable
 fun DrawerContent(
     modifier: Modifier = Modifier,
-    viewModel: SettingsViewModel,
+    viewModel: SettingsViewModel= hiltViewModel(),
     onGoToHomeClick: () -> Unit
 ) {
 
@@ -213,5 +214,5 @@ fun GenericDropDownMenu(
 @Preview(showSystemUi = true)
 @Composable
 private fun DrawerContentPreview() {
-    DrawerContent(viewModel = SettingsViewModel(), onGoToHomeClick = {})
+    DrawerContent( onGoToHomeClick = {})
 }

@@ -5,10 +5,15 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
+import com.route.newsappc41gsunwed.shared_prefrences.KeyValueStorage
 import com.route.newsappc41gsunwed.utils.Constants
+import com.route.newsappc41gsunwed.utils.applyThemeToApp
+import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Locale
+import javax.inject.Inject
 
-class SettingsViewModel() : ViewModel() {
+@HiltViewModel
+class SettingsViewModel @Inject constructor(private val keyValueStorage: KeyValueStorage) : ViewModel() {
 
     private val _themeExpanded = mutableStateOf(false)
     val themeExpanded: State<Boolean> = _themeExpanded
@@ -35,11 +40,8 @@ class SettingsViewModel() : ViewModel() {
 
     fun applyTheme(key: String) {
         setSelectedTheme(key)
-        when (key) {
-            Constants.DARK_MODE -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            Constants.LIGHT_MODE -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            Constants.SYSTEM_MODE -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        }
+        keyValueStorage.save(Constants.THEME_KEY,key)
+        applyThemeToApp(key)
     }
 
     private val _languageExpanded = mutableStateOf(false)

@@ -31,12 +31,25 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.route.newsappc41gsunwed.shared_prefrences.KeyValueStorage
 import com.route.newsappc41gsunwed.ui.theme.NewsAppC41GSunWedTheme
+import com.route.newsappc41gsunwed.utils.Constants
+import com.route.newsappc41gsunwed.utils.applyThemeToApp
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SplashActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var keyValueStorage: KeyValueStorage
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val savedTheme = keyValueStorage.get(Constants.THEME_KEY)
+        applyThemeToApp(savedTheme)
+
         setContent {
             NewsAppC41GSunWedTheme {
                 LaunchedEffect(Unit) {
