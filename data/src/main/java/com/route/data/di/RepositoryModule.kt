@@ -1,33 +1,32 @@
 package com.route.data.di
 
 import com.route.data.api.NewsServices
-import com.route.data.dataSource.online.NewsOnlineDataSourceImpl
+import com.route.data.repositories.remote.RemoteDataSourceImpl
 import com.route.data.repositories.NewsRepositoryImpl
-import com.route.domain.repositories.NewsOnlineDataSource
 import com.route.domain.repositories.NewsRepository
+import com.route.domain.repositories.local.LocalDataSource
+import com.route.domain.repositories.remote.RemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 object RepositoryModule {
-    @Singleton
     @Provides
     fun provideOnlineDataSource(
         newsServices: NewsServices
-    ): NewsOnlineDataSource {
-        return NewsOnlineDataSourceImpl(newsServices)
+    ): RemoteDataSource {
+        return RemoteDataSourceImpl(newsServices)
     }
 
-    @Singleton
     @Provides
     fun provideNewsRepository(
-        onlineDataSource: NewsOnlineDataSource
+        remoteDataSource: RemoteDataSource,
+        localDataSource: LocalDataSource
     ): NewsRepository {
-        return NewsRepositoryImpl(onlineDataSource)
+        return NewsRepositoryImpl(localDataSource = localDataSource, remoteDataSource = remoteDataSource)
     }
 
 }

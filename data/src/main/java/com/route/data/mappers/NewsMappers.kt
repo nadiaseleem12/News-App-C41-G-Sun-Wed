@@ -1,16 +1,16 @@
 package com.route.data.mappers
 
-import com.route.data.api.model.ArticlesItem
-import com.route.data.api.model.NewsResponse
-import com.route.domain.entities.ArticlesItemEntity
-import com.route.domain.entities.NewsResponseEntity
+import com.route.data.api.model.ArticlesItemDto
+import com.route.data.api.model.NewsResponseDto
+import com.route.data.models.ArticlesItemEntity
+import com.route.data.models.NewsResponseEntity
 
-fun NewsResponse.toEntity(): NewsResponseEntity {
+fun NewsResponseDto.toEntity(): NewsResponseEntity {
     return NewsResponseEntity(totalResults, articles?.map {
         it.toEntity()
     }, status, code, message)
 }
 
-fun ArticlesItem.toEntity(): ArticlesItemEntity {
-    return ArticlesItemEntity(publishedAt, author, urlToImage, description, title, url, content)
+fun ArticlesItemDto.toEntity(): ArticlesItemEntity {
+    return ArticlesItemEntity(publishedAt, author, urlToImage, description, title, url, content, sourceId = source?.id ?: "")
 }

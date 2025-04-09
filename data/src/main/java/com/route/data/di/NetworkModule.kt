@@ -1,11 +1,14 @@
 package com.route.data.di
 
+import android.content.Context
 import android.util.Log
 import com.route.data.api.ApiKeyInterceptor
+import com.route.data.api.NetworkHandler
 import com.route.data.api.NewsServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -70,6 +73,12 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(gsonConverterFactory)
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideNetworkHandler(@ApplicationContext context: Context): NetworkHandler {
+        return NetworkHandler(context)
     }
 
 }

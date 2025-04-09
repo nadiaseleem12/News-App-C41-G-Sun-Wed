@@ -1,17 +1,12 @@
 package com.route.domain.repositories
 
-import com.route.domain.entities.ArticlesItemEntity
-import com.route.domain.entities.SourcesItemEntity
+import com.route.domain.models.ArticlesItem
+import com.route.domain.models.SourcesItem
 
 
 interface NewsRepository {
-    suspend fun getSourcesByCategory(categoryId: String): List<SourcesItemEntity>
-    suspend fun getNewsBySource(sourceId: String): List<ArticlesItemEntity>
-    suspend fun searchNews(query: String): List<ArticlesItemEntity>
+    suspend fun getSourcesByCategory(categoryId: String): List<SourcesItem>
+    suspend fun getNewsBySource(sourceId: String): List<ArticlesItem>
+    suspend fun searchNews(query: String): List<ArticlesItem>
 }
 
-interface NewsOnlineDataSource {
-    suspend fun fetchSourcesByCategory(categoryId: String): List<SourcesItemEntity>
-    suspend fun fetchNewsBySource(sourceId: String): List<ArticlesItemEntity>
-    suspend fun searchNews(query: String): List<ArticlesItemEntity>
-}

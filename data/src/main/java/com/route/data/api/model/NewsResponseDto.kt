@@ -1,14 +1,15 @@
 package com.route.data.api.model
 
+import androidx.room.Ignore
 import com.google.gson.annotations.SerializedName
 
-data class NewsResponse(
+data class NewsResponseDto(
 
     @field:SerializedName("totalResults")
     val totalResults: Int? = null,
 
     @field:SerializedName("articles")
-    val articles: List<ArticlesItem>? = null,
+    val articles: List<ArticlesItemDto>? = null,
 
     @field:SerializedName("status")
     val status: String? = null,
@@ -17,8 +18,7 @@ data class NewsResponse(
     @field:SerializedName("message")
     val message: String? = null
 )
-
-data class ArticlesItem(
+data class ArticlesItemDto(
 
     @field:SerializedName("publishedAt")
     val publishedAt: String? = null,
@@ -39,5 +39,9 @@ data class ArticlesItem(
     val url: String? = null,
 
     @field:SerializedName("content")
-    val content: String? = null
+    val content: String? = null,
+
+    @Ignore
+    @field:SerializedName("source")
+    val source: SourcesItemDto? = null,
 )
