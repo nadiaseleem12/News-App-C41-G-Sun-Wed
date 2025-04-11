@@ -1,6 +1,5 @@
-package com.route.data.api.model
+package com.route.data.models.dto
 
-import androidx.room.Ignore
 import com.google.gson.annotations.SerializedName
 
 data class NewsResponseDto(
@@ -41,7 +40,6 @@ data class ArticlesItemDto(
     @field:SerializedName("content")
     val content: String? = null,
 
-    @Ignore
     @field:SerializedName("source")
     val source: SourcesItemDto? = null,
 )

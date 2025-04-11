@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.route.data.models.ArticlesItemEntity
-import com.route.data.models.SourcesItemEntity
+import com.route.domain.models.ArticlesItem
+import com.route.domain.models.SourcesItem
 import com.route.domain.usecases.GetNewsUseCase
 import com.route.domain.usecases.GetSourcesUseCase
 import com.route.domain.usecases.SearchNewsUseCase
@@ -24,11 +24,11 @@ class NewsViewModel @Inject constructor(
     // contain States and Logic
     val selectedSourceId = mutableStateOf("") // Observer Pattern
     val isLoading = mutableStateOf(false)
-    val sourcesListStates = mutableStateListOf<SourcesItemEntity>()
-    val newsListStates = mutableStateListOf<ArticlesItemEntity>()
+    val sourcesListStates = mutableStateListOf<SourcesItem>()
+    val newsListStates = mutableStateListOf<ArticlesItem>()
     val errorState = mutableStateOf("")
     var openBottomSheet = mutableStateOf(false)
-    var selectedArticle = mutableStateOf<ArticlesItemEntity?>(null)
+    var selectedArticle = mutableStateOf<ArticlesItem?>(null)
 
     val searchQuery = mutableStateOf("")
     val isFocused = mutableStateOf(true)

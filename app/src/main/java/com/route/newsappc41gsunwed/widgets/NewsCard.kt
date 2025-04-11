@@ -19,12 +19,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.route.data.models.ArticlesItemEntity
+import com.route.domain.models.ArticlesItem
 import com.route.newsappc41gsunwed.R
 import com.route.newsappc41gsunwed.ui.theme.gray
 
 @Composable
-fun NewsCard(articleItem: ArticlesItemEntity, modifier: Modifier = Modifier) {
+fun NewsCard(articleItem: ArticlesItem, modifier: Modifier = Modifier) {
     Card(
         modifier
             .fillMaxWidth()
@@ -44,7 +44,7 @@ fun NewsCard(articleItem: ArticlesItemEntity, modifier: Modifier = Modifier) {
             contentScale = ContentScale.Crop
         )
         Text(
-            text = articleItem.title ?: "",
+            text = articleItem.title,
             fontSize = 20.sp,
             color = MaterialTheme.colorScheme.onBackground,
             fontWeight = FontWeight.W700,

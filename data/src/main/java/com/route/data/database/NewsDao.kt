@@ -1,12 +1,10 @@
 package com.route.data.database
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
-import com.route.data.models.ArticlesItemEntity
-import com.route.data.models.SourcesItemEntity
+import com.route.data.models.entity.ArticlesItemEntity
+import com.route.data.models.entity.SourcesItemEntity
 
 @Dao
 interface NewsDao {
@@ -20,7 +18,7 @@ interface NewsDao {
     @Query("SELECT * FROM articlesitementity WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR content LIKE '%' || :query || '%'")
     suspend fun searchNews(query: String): List<ArticlesItemEntity>
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun insertSources(sources: List<SourcesItemEntity>)
     @Upsert
     suspend fun insertArticles(articles: List<ArticlesItemEntity>)

@@ -25,19 +25,22 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.route.data.mappers.ArticlesItemMapper
+import com.route.data.mappers.SourceItemMapper
+import com.route.data.models.dto.ArticlesItemDto
+import com.route.data.models.dto.SourcesItemDto
+import com.route.domain.models.SourcesItem
 import com.route.newsappc41gsunwed.widgets.ErrorDialog
 import com.route.newsappc41gsunwed.widgets.NewsCard
 import com.route.newsappc41gsunwed.widgets.NewsList
 import com.route.newsappc41gsunwed.widgets.NewsToolbar
-import com.route.data.models.ArticlesItemEntity
-import com.route.data.models.SourcesItemEntity
 
 // News Screen -> MVVM
 @Composable
 fun NewsScreen(
     endpointId: String,
-    viewModel: NewsViewModel = viewModel(),
+    viewModel: NewsViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     drawerState: DrawerState,
     onSearchClick: () -> Unit,
@@ -92,17 +95,18 @@ fun NewsScreen(
 @Composable
 private fun NewsCardPreview() {
     NewsCard(
-        articleItem = ArticlesItemEntity(
+        articleItem = ArticlesItemMapper.dtoToDomain(
+            ArticlesItemDto(
             author = "Jon Haworth",
             title = "40-year-old man falls 200 feet to his death while canyoneering at national park",
-
             )
+        )
     )
 }
 
 @Composable
 fun SourcesTabRow(
-    sourcesList: List<SourcesItemEntity>,
+    sourcesList: List<SourcesItem>,
     modifier: Modifier = Modifier,
     onSourceSelected: (id: String) -> Unit
 ) {
@@ -153,9 +157,9 @@ fun SourcesTabRow(
 private fun SourcesTabRowPreview() {
     SourcesTabRow(
         sourcesList = listOf(
-            SourcesItemEntity(name = "ABC News"),
-            SourcesItemEntity(name = "Al-Jazeera"),
-            SourcesItemEntity(name = "BBC News")
+            SourceItemMapper.dtoToDomain(SourcesItemDto(name = "ABC News")),
+            SourceItemMapper.dtoToDomain(SourcesItemDto(name = "ABC News")),
+            SourceItemMapper.dtoToDomain(SourcesItemDto(name = "ABC News")),
         )
     ) {
 

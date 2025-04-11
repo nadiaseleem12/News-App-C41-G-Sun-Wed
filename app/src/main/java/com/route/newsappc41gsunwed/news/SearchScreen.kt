@@ -1,6 +1,5 @@
 package com.route.newsappc41gsunwed.news
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -37,13 +36,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.route.newsappc41gsunwed.R
 import com.route.newsappc41gsunwed.widgets.ErrorDialog
 import com.route.newsappc41gsunwed.widgets.NewsList
 
 @Composable
-fun SearchScreen(viewModel: NewsViewModel = viewModel(), modifier: Modifier = Modifier) {
+fun SearchScreen(viewModel: NewsViewModel = hiltViewModel(), modifier: Modifier = Modifier) {
     val searchTFFocusRequester = remember { FocusRequester() }
 
     val focusManager = LocalFocusManager.current

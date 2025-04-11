@@ -32,7 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.route.data.models.ArticlesItemEntity
+import com.route.data.mappers.ArticlesItemMapper
+import com.route.data.models.dto.ArticlesItemDto
+import com.route.domain.models.ArticlesItem
 import com.route.newsappc41gsunwed.R
 import com.route.newsappc41gsunwed.news.NewsViewModel
 import com.route.newsappc41gsunwed.ui.theme.gray
@@ -59,7 +61,7 @@ fun NewsList(viewModel: NewsViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ArticleDetailsBottomSheet(
-    articleItem: ArticlesItemEntity?,
+    articleItem: ArticlesItem?,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit
 ) {
@@ -130,5 +132,5 @@ fun ArticleDetailsBottomSheet(
 @Preview(showSystemUi = true)
 @Composable
 private fun ArticleDetailsBottomSheetPreview() {
-    ArticleDetailsBottomSheet(articleItem = ArticlesItemEntity()) {}
+    ArticleDetailsBottomSheet(articleItem = ArticlesItemMapper.dtoToDomain(ArticlesItemDto())) {}
 }

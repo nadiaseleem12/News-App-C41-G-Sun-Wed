@@ -1,7 +1,7 @@
 package com.route.data.api
 
-import com.route.data.api.model.NewsResponseDto
-import com.route.data.api.model.SourcesResponseDto
+import com.route.data.models.dto.NewsResponseDto
+import com.route.data.models.dto.SourcesResponseDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
